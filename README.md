@@ -5,14 +5,16 @@ Working remotely, with designer in one timezone and client in another?
 
 GitSwitcher "Light" is a simple library designed to allow users to switch git branches via url for feedback &amp; testing. It is perfect for developers working remotely on multiple branches to create links "to a branch" for their non-technical clients or manager to review work while they are not available. Setup is simply & requires very little configuration.
 
-Configuration:
-==============
+<h3>Configuration:</h3>
 
-// set your absolute path to the repo
+
+Set your absolute path to the repo:
+
 $config['git_path'] = '/var/www/dev'; 
 
-// you can set the site url here & not have to include it in the one you send to client
-// just put the url in the first slot 
+You can set the site url here & not have to include it in the one you send to client
+Just put the url in the first slot 
+
 $config['redirect'] = (empty($redirect))? 'http://dev.mysite.com' : $redirect; 	
 
 That's it! Now, when you do some work on on a branch, send them the link:
