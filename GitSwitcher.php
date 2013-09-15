@@ -26,7 +26,7 @@ class GitSwitcher
 	public function main($new_branch)
 	{
 
-		$this->set_repo_path($this->git_path);
+		$this->set_repo_path($this->git_path);	
 
 		$branches = $this->get_branch_list();
 
@@ -55,14 +55,37 @@ class GitSwitcher
 
 	public function set_repo_path($path)
 	{
-		$command = 'cd ' . $path; 
-		return $this->exec_command($command, true);
+		try {
+			$command = 'cd ' . $path; 
+			$return = $this->exec_command($command);
+
+			if (!empty($return))
+			{
+				throw new Exception('Error: Directory not found. Please check with your admin or developer');								
+			}		
+		}
+		catch (Exception $e){
+			die($e->getMessage());
+		}
+
 	}
 
 	public function get_branch_list()
 	{
-		$command = 'git branch -l';
-		return $this->exec_command($command, true);
+		try {
+			$command = 'git branch -l'; 
+			$output = $this->exec_command($command);
+
+			if (substr($output[0], 0, 6) == 'fatal:') //there must be a better way of capturing this
+			{
+				throw new Exception('Error: Git repository not found. Please check with your admin or developer');								
+			}
+
+			return $output;	
+		}
+		catch (Exception $e){
+			die($e->getMessage());
+		}
 	}
 
 	public function parse_branch_list($branches = array())
@@ -86,15 +109,16 @@ class GitSwitcher
 	public function checkout_branch($branch)
 	{
 		$command = 'git checkout '. $branch;
-		return $this->exec_command($command, false);
+		return $this->exec_command($command);
 	}
 
-	public function exec_command($command, $output=false){
-		exec($command, $output);
-		
-		if($output) return $output;
+	public function exec_command($command){
 
-		return true;
+		$command .=  ' 2>&1'; //get errors
+
+		exec($command, $output);
+
+		return $output;
 	}
 
 }
