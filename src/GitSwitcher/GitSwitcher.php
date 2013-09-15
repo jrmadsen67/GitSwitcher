@@ -108,6 +108,7 @@ class GitSwitcher
 
 	/**
 	 * Parse branches
+	 * 
 	 * @param  array  $branches array containing branches
 	 * @return array            array containing all branches
 	 */
@@ -130,27 +131,14 @@ class GitSwitcher
 
 	/**
 	 * Checkout branch
+	 * 
 	 * @param  string $branch Name of branch to be checked out
 	 * @return mixed          Something...
 	 */
 	protected function checkout_branch($branch)
 	{
-		$command = 'git checkout '. $branch;
-		return $this->exec_command($command);
-	}
-
-	/**
-	 * Simple method to execute command
-	 * @param  string $command Command string
-	 * @return mixed           
-	 */
-	protected function exec_command($command){
-
-		$command .=  ' 2>&1'; //get errors
-
-		exec($command, $output);
-
-		return $output;
+		$command = 'git checkout '. $branch .' 2>&1';
+		return exec($command, $output);
 	}
 
 }
