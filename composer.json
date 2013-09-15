@@ -1,0 +1,16 @@
+{
+    "name": "gitswitcher/gitswitcher",
+    "description": "A simple utility to help you checkout and switch git branched via script.",
+    "keywords": ["git","gitswitcher"],
+    "license": "GPL-2.0+",
+    "require": {
+        "php": ">=5.3.10",
+        "psr/log": "~1.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "GitSwitcher": "src/",
+            "Psr": "vendor/psr/cache"
+        }
+    }
+}

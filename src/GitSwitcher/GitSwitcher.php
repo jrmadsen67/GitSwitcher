@@ -1,28 +1,37 @@
 <?php
 
+namespace GitSwitcher;
+
 class GitSwitcher
 {
-	
+	/**
+	 * Path to the git repo
+	 * @var string
+	 */
 	private $git_path;
 
+	/**
+	 * URL path to redirect to
+	 * @var string
+	 */
 	private $redirect;
 
-	public function __construct($config){
-
-		if(is_array($config)) $this->initialize($config);
-
-	}
-
-
-    public function initialize($config){
-        if(!is_array($config)) return false;
-        
-        foreach($config as $key => $val){
+	/**
+	 * Constructor
+	 * @param array $config Array containing git_path and redirect
+	 */
+	public function __construct(array $config){
+		foreach($config as $key => $val){
             $this->$key = $val;
         }
+	}	
 
-    }	
-
+	/**
+	 * Method to switch branch
+	 * 
+	 * @param  string $new_branch Branch name
+	 * @return mixed             Redirect or exception
+	 */
 	public function main($new_branch)
 	{
 
@@ -52,8 +61,12 @@ class GitSwitcher
 
 	}
 
-
-	public function set_repo_path($path)
+	/**
+	 * Set repository path
+	 * 
+	 * @param string $path Full path to repository
+	 */
+	protected function set_repo_path($path)
 	{
 		try {
 			$command = 'cd ' . $path; 
@@ -70,7 +83,12 @@ class GitSwitcher
 
 	}
 
-	public function get_branch_list()
+	/**
+	 * Get list of branches in repo
+	 * 
+	 * @return string List of branches in repo
+	 */
+	protected function get_branch_list()
 	{
 		try {
 			$command = 'git branch -l'; 
@@ -88,7 +106,12 @@ class GitSwitcher
 		}
 	}
 
-	public function parse_branch_list($branches = array())
+	/**
+	 * Parse branches
+	 * @param  array  $branches array containing branches
+	 * @return array            array containing all branches
+	 */
+	protected function parse_branch_list($branches = array())
 	{
 
 		$branch_list = array();
@@ -105,14 +128,23 @@ class GitSwitcher
 		return $branch_list;
 	}
 
-
-	public function checkout_branch($branch)
+	/**
+	 * Checkout branch
+	 * @param  string $branch Name of branch to be checked out
+	 * @return mixed          Something...
+	 */
+	protected function checkout_branch($branch)
 	{
 		$command = 'git checkout '. $branch;
 		return $this->exec_command($command);
 	}
 
-	public function exec_command($command){
+	/**
+	 * Simple method to execute command
+	 * @param  string $command Command string
+	 * @return mixed           
+	 */
+	protected function exec_command($command){
 
 		$command .=  ' 2>&1'; //get errors
 
